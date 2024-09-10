@@ -4,7 +4,6 @@ import com.gk.auth.model.Role;
 import com.gk.auth.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -15,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
@@ -27,10 +27,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/create").permitAll()
                         .requestMatchers("/users/all").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/users/admin").hasAuthority(Role.USER.name())
+                        .requestMatchers("/users/admin").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(Customizer.withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
@@ -56,5 +56,6 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(getPasswordEncoder());
         return authenticationProvider;
     }
+
 
 }

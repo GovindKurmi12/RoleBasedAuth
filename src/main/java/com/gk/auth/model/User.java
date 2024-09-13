@@ -23,10 +23,10 @@ public class User implements Serializable {
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, unique = true, length = 100)
     private String password;
 
     @Column(name = "roles", nullable = false)

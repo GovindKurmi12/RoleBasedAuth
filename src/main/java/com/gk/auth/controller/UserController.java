@@ -1,5 +1,6 @@
 package com.gk.auth.controller;
 
+import com.gk.auth.model.LoginRequest;
 import com.gk.auth.model.User;
 import com.gk.auth.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -21,19 +22,13 @@ public class UserController {
         return userService.createUser(user);
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return userService.loginUser(loginRequest);
+    }
+
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
-
-    @GetMapping("/{id}")
-    public User getById(@PathVariable Long id) {
-        return userService.getById(id);
-    }
-
-    @GetMapping("/admin")
-    public String getById() {
-        return "admin";
-    }
-
 }
